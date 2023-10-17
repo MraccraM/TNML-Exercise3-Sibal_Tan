@@ -435,7 +435,7 @@ num_train_batches = 20
 
 # QAT takes time and one needs to train over a few epochs.
 # Train and check accuracy after each epoch
-for nepoch in range(8):
+for nepoch in range(20):
     train_one_epoch(qat_model, criterion, optimizer, data_loader, torch.device('cpu'), num_train_batches)
     if nepoch > 3:
         # Freeze quantizer parameters
