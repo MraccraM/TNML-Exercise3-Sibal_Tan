@@ -305,8 +305,8 @@ temp = os.path.abspath(os.getcwd())
 data_path = str(temp) + '\data_path\imagenet'
 saved_model_dir = str(temp)
 float_model_file = '\mobilenet_v2-b0353104.pth'
-scripted_float_model_file = 'mobilenet_quantization_scripted.pth'
-scripted_quantized_model_file = 'mobilenet_quantization_scripted_quantized.pth'
+scripted_float_model_file = '\mobilenet_quantization_scripted.pth'
+scripted_quantized_model_file = '\mobilenet_quantization_scripted_quantized.pth'
 
 train_batch_size = 30
 eval_batch_size = 50
