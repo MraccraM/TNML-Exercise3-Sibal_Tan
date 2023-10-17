@@ -270,6 +270,7 @@ def print_size_of_model(model):
 #     image,klass = dataset[i]
 #     print(f"Sample of class {klass:3d}, image {image}, words {dataset.idx_to_words[klass]}")
 
+# ############################################## TUTORIAL DATA LOADER ########################################
 def prepare_data_loaders(data_path):
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
