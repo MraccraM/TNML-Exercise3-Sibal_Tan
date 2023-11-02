@@ -7,6 +7,8 @@ Comparisons:
 Base model: 16 ms
 Quantized model: 4 ms
 
+
+
 2. Power
 There are no comparisons for power in this mode. The power value is not present in the tutorial code.
 
@@ -22,6 +24,9 @@ Training Accuracy per epoch (acc@1, acc@5): #1(0.333, 0.667), #2(0.167, 1.833), 
                                             #11(1.000, 3.167), #12(0.667, 2.667), #13(0.167, 3.333), #14(0.333, 3.000), #15(0.000, 3.833), 
                                             #16(0.333, 3.167), #17(0.500, 2.667), #18(0.500, 2.667), #19(0.500, 3.167), #20(0.167, 2.500)
 
+
+
 5. Model Size 
 Baseline model: 13.990612 MB
 Post Training Quantization model: 3.620878 MB
+
