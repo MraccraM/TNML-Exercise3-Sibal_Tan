@@ -4,15 +4,24 @@ Patrick Elijah T. Tan
 
 Comparisons:
 1. Latency
-
+Base model: 16 ms
+Quantized model: 4 ms
 
 2. Power
-
+There are no comparisons for power in this mode. The power value is not present in the tutorial code.
 
 3. Energy
 There are no comparisons for energy in this model. The energy value is not present in the tutorial code.
 
 4. Accuracy 
-
+Baseline model: "0.04"
+Post Training Quantization model 1: "0.04"
+Post Training Quantization model 2: "0.03"
+Training Accuracy per epoch (acc@1, acc@5): #1(0.333, 0.667), #2(0.167, 1.833), #3(0.500, 2.167), #4(0.500, 2.333), #5(0.500, 2.333), 
+                                            #6(0.500, 1.833), #7(0.667, 3.000), #8(0.333, 2.000), #9(0.333, 1.500), #10(0.667, 3.333), 
+                                            #11(1.000, 3.167), #12(0.667, 2.667), #13(0.167, 3.333), #14(0.333, 3.000), #15(0.000, 3.833), 
+                                            #16(0.333, 3.167), #17(0.500, 2.667), #18(0.500, 2.667), #19(0.500, 3.167), #20(0.167, 2.500)
 
 5. Model Size 
+Baseline model: 13.990612 MB
+Post Training Quantization model: 3.620878 MB
