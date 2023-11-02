@@ -1,0 +1,167 @@
+ Inverted Residual Block: Before fusion 
+
+ Sequential(
+  (0): ConvBNReLU(
+    (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+    (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+  )
+  (1): Conv2d(32, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+  (2): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+)
+
+ Inverted Residual Block: After fusion
+
+ Sequential(
+  (0): ConvBNReLU(
+    (0): ConvReLU2d(
+      (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32)
+      (1): ReLU()
+    )
+    (1): Identity()
+    (2): Identity()
+  )
+  (1): Conv2d(32, 16, kernel_size=(1, 1), stride=(1, 1))
+  (2): Identity()
+)
+Size of baseline model
+Size (MB): 13.990612
+........................................................................................................................................................................................................Evaluation accuracy on 50000 images, 0.04
+QConfig(activation=functools.partial(<class 'torch.ao.quantization.observer.MinMaxObserver'>, quant_min=0, quant_max=127){}, weight=functools.partial(<class 'torch.ao.quantization.observer.MinMaxObserver'>, dtype=torch.qint8, qscheme=torch.per_tensor_symmetric){})
+Post Training Quantization Prepare: Inserting Observers
+
+ Inverted Residual Block:After observer insertion
+
+ Sequential(
+  (0): ConvBNReLU(
+    (0): ConvReLU2d(
+      (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32)
+      (1): ReLU()
+      (activation_post_process): MinMaxObserver(min_val=inf, max_val=-inf)
+    )
+    (1): Identity()
+    (2): Identity()
+  )
+  (1): Conv2d(
+    32, 16, kernel_size=(1, 1), stride=(1, 1)
+    (activation_post_process): MinMaxObserver(min_val=inf, max_val=-inf)
+  )
+  (2): Identity()
+)
+................................Post Training Quantization: Calibration done
+C:\Users\Derp\AppData\Roaming\Python\Python310\site-packages\torch\ao\quantization\utils.py:317: UserWarning: must run observer before calling calculate_qparams. Returning default values.
+  warnings.warn(
+Post Training Quantization: Convert done
+
+ Inverted Residual Block: After fusion and quantization, note fused modules:
+
+ Sequential(
+  (0): ConvBNReLU(
+    (0): QuantizedConvReLU2d(32, 32, kernel_size=(3, 3), stride=(1, 1), scale=0.08880201727151871, zero_point=0, padding=(1, 1), groups=32)
+    (1): Identity()
+    (2): Identity()
+  )
+  (1): QuantizedConv2d(32, 16, kernel_size=(1, 1), stride=(1, 1), scale=0.11103873699903488, zero_point=63)
+  (2): Identity()
+)
+Size of model after quantization
+Size (MB): 3.620878
+........................................................................................................................................................................................................Evaluation accuracy on 50000 images, 0.04
+QConfig(activation=functools.partial(<class 'torch.ao.quantization.observer.HistogramObserver'>, reduce_range=True){}, weight=functools.partial(<class 'torch.ao.quantization.observer.PerChannelMinMaxObserver'>, dtype=torch.qint8, qscheme=torch.per_channel_symmetric){})
+C:\Users\Derp\AppData\Roaming\Python\Python310\site-packages\torch\ao\quantization\observer.py:214: UserWarning: Please use quant_min and quant_max to specify the range for observers.                     reduce_range will be deprecated in a future release of PyTorch.
+  warnings.warn(
+................................C:\Users\Derp\AppData\Roaming\Python\Python310\site-packages\torch\ao\quantization\observer.py:1207: UserWarning: must run observer before calling calculate_qparams.                                    Returning default scale and zero point 
+  warnings.warn(
+........................................................................................................................................................................................................Evaluation accuracy on 50000 images, 0.03
+Inverted Residual Block: After preparation for QAT, note fake-quantization modules 
+ Sequential(
+  (0): ConvBNReLU(
+    (0): ConvReLU2d(
+      32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32
+      (weight_fake_quant): FusedMovingAvgObsFakeQuantize(
+        fake_quant_enabled=tensor([1]), observer_enabled=tensor([1]), scale=tensor([1.]), zero_point=tensor([0], dtype=torch.int32), dtype=torch.qint8, quant_min=-128, quant_max=127, qscheme=torch.per_channel_symmetric, reduce_range=False
+        (activation_post_process): MovingAveragePerChannelMinMaxObserver(min_val=tensor([]), max_val=tensor([]))
+      )
+      (activation_post_process): FusedMovingAvgObsFakeQuantize(
+        fake_quant_enabled=tensor([1]), observer_enabled=tensor([1]), scale=tensor([1.]), zero_point=tensor([0], dtype=torch.int32), dtype=torch.quint8, quant_min=0, quant_max=127, qscheme=torch.per_tensor_affine, reduce_range=True
+        (activation_post_process): MovingAverageMinMaxObserver(min_val=inf, max_val=-inf)
+      )
+    )
+    (1): Identity()
+    (2): Identity()
+  )
+  (1): Conv2d(
+    32, 16, kernel_size=(1, 1), stride=(1, 1)
+    (weight_fake_quant): FusedMovingAvgObsFakeQuantize(
+      fake_quant_enabled=tensor([1]), observer_enabled=tensor([1]), scale=tensor([1.]), zero_point=tensor([0], dtype=torch.int32), dtype=torch.qint8, quant_min=-128, quant_max=127, qscheme=torch.per_channel_symmetric, reduce_range=False
+      (activation_post_process): MovingAveragePerChannelMinMaxObserver(min_val=tensor([]), max_val=tensor([]))
+    )
+    (activation_post_process): FusedMovingAvgObsFakeQuantize(
+      fake_quant_enabled=tensor([1]), observer_enabled=tensor([1]), scale=tensor([1.]), zero_point=tensor([0], dtype=torch.int32), dtype=torch.quint8, quant_min=0, quant_max=127, qscheme=torch.per_tensor_affine, reduce_range=True
+      (activation_post_process): MovingAverageMinMaxObserver(min_val=inf, max_val=-inf)
+    )
+  )
+  (2): Identity()
+)
+....................Loss tensor(7.9756, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.333 Acc@5 0.667
+........................................................................................................................................................................................................Epoch 0 :Evaluation accuracy on 50000 images, 0.45
+....................Loss tensor(6.6191, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.167 Acc@5 1.833
+........................................................................................................................................................................................................Epoch 1 :Evaluation accuracy on 50000 images, 0.59
+....................Loss tensor(6.5113, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.500 Acc@5 2.167
+........................................................................................................................................................................................................Epoch 2 :Evaluation accuracy on 50000 images, 0.40
+....................Loss tensor(6.3857, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.500 Acc@5 2.333
+........................................................................................................................................................................................................Epoch 3 :Evaluation accuracy on 50000 images, 0.45
+....................Loss tensor(6.2667, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.500 Acc@5 2.333
+........................................................................................................................................................................................................Epoch 4 :Evaluation accuracy on 50000 images, 0.52
+....................Loss tensor(6.2132, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.500 Acc@5 1.833
+........................................................................................................................................................................................................Epoch 5 :Evaluation accuracy on 50000 images, 0.59
+....................Loss tensor(6.1740, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.667 Acc@5 3.000
+........................................................................................................................................................................................................Epoch 6 :Evaluation accuracy on 50000 images, 0.62
+....................Loss tensor(6.1042, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.333 Acc@5 2.000
+........................................................................................................................................................................................................Epoch 7 :Evaluation accuracy on 50000 images, 0.62
+....................Loss tensor(6.0826, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.333 Acc@5 1.500
+........................................................................................................................................................................................................Epoch 8 :Evaluation accuracy on 50000 images, 0.48
+....................Loss tensor(6.0815, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.667 Acc@5 3.333
+........................................................................................................................................................................................................Epoch 9 :Evaluation accuracy on 50000 images, 0.65
+....................Loss tensor(5.9855, grad_fn=<DivBackward0>)
+Training: * Acc@1 1.000 Acc@5 3.167
+........................................................................................................................................................................................................Epoch 10 :Evaluation accuracy on 50000 images, 0.54
+....................Loss tensor(6.0207, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.667 Acc@5 2.667
+........................................................................................................................................................................................................Epoch 11 :Evaluation accuracy on 50000 images, 0.58
+....................Loss tensor(5.9513, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.167 Acc@5 3.333
+........................................................................................................................................................................................................Epoch 12 :Evaluation accuracy on 50000 images, 0.67
+....................Loss tensor(5.9815, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.333 Acc@5 3.000
+........................................................................................................................................................................................................Epoch 13 :Evaluation accuracy on 50000 images, 0.62
+....................Loss tensor(5.9661, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.000 Acc@5 3.833
+........................................................................................................................................................................................................Epoch 14 :Evaluation accuracy on 50000 images, 0.69
+....................Loss tensor(5.9232, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.333 Acc@5 3.167
+........................................................................................................................................................................................................Epoch 15 :Evaluation accuracy on 50000 images, 0.66
+....................Loss tensor(5.9672, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.500 Acc@5 2.667
+........................................................................................................................................................................................................Epoch 16 :Evaluation accuracy on 50000 images, 0.78
+....................Loss tensor(5.9658, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.500 Acc@5 2.667
+........................................................................................................................................................................................................Epoch 17 :Evaluation accuracy on 50000 images, 0.72
+....................Loss tensor(5.9010, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.500 Acc@5 3.167
+........................................................................................................................................................................................................Epoch 18 :Evaluation accuracy on 50000 images, 0.61
+....................Loss tensor(5.8523, grad_fn=<DivBackward0>)
+Training: * Acc@1 0.167 Acc@5 2.500
+........................................................................................................................................................................................................Epoch 19 :Evaluation accuracy on 50000 images, 0.83
+Elapsed time:  16 ms
+Elapsed time:   4 ms
