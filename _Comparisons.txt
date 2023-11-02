@@ -2,6 +2,11 @@ Names:
 Marc Ezekiel L. Sibal
 Patrick Elijah T. Tan 
 
+PC Specifications:
+CPU - AMD Ryzen 5 5600X @3.7Ghz
+RAM - 32GB
+GPU - NVIDIA RTX2060
+
 Comparisons:
 1. Latency
 Base model: 16 ms
