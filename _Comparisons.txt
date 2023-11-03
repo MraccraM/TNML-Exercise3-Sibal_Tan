@@ -12,7 +12,8 @@ Comparisons:
 Base model: 16 ms
 Quantized model: 4 ms
 
-
+The base model has a longer latency compared to the quantized model. This is likely because the model size of the quantized model is much smaller compared to the base model.
+The quantized model shrunk in size due to quantization and in turn reduced the overall time needed to conduct computations. 
 
 2. Power
 There are no comparisons for power in this mode. The power value is not present in the tutorial code.
@@ -24,14 +25,23 @@ There are no comparisons for energy in this model. The energy value is not prese
 Baseline model: "0.04"
 Post Training Quantization model 1: "0.04"
 Post Training Quantization model 2: "0.03"
-Training Accuracy per epoch (acc@1, acc@5): #1(0.333, 0.667), #2(0.167, 1.833), #3(0.500, 2.167), #4(0.500, 2.333), #5(0.500, 2.333), 
+Accuracy per epoch #(acc):  #1(0.45), #2(0.59), #3(0.40), #4(0.45), #5(0.52),
+                            #6(0.59), #7(0.62), #8(0.62), #9(0.48), #10(0.65),
+                            #11(0.54), #12(0.58), #13(0.67), #14(0.62), #15(0.69),
+                            #16(0.66), #17(0.78), #18(0.72), #19(0.61), #20(0.83),
+Training Accuracy per epoch #(acc@1, acc@5): #1(0.333, 0.667), #2(0.167, 1.833), #3(0.500, 2.167), #4(0.500, 2.333), #5(0.500, 2.333), 
                                             #6(0.500, 1.833), #7(0.667, 3.000), #8(0.333, 2.000), #9(0.333, 1.500), #10(0.667, 3.333), 
                                             #11(1.000, 3.167), #12(0.667, 2.667), #13(0.167, 3.333), #14(0.333, 3.000), #15(0.000, 3.833), 
                                             #16(0.333, 3.167), #17(0.500, 2.667), #18(0.500, 2.667), #19(0.500, 3.167), #20(0.167, 2.500)
 
-
+Unfortunately, due to unknown differences or potential errors, the listed accuracy of the baseline model and post training quantized model is "0.04" and "0.03" respectively. 
+Fortunately, across epoch 1-20 the accuracy of the model increased from 45% to 83%. And an average accuracy of 60.35%
+Regardless of the unexpected baseline and post training quantized accuracy, it is a fair to conclude that the final quantized aware training accuracy is signigicantly better than the other models.
+Overall, with a final accuracy of 83% the model can be considered as good. However, with the average accuracy of 60.35% the model may need additional adjustments to increase the average accuracy. 
 
 5. Model Size 
 Baseline model: 13.990612 MB
 Post Training Quantization model: 3.620878 MB
 
+The base model has a significantly larger model size compared to the quantized model. The act of quantizing data is to map infinite values to a set of finite discrete values.
+In that regard, some infinite values may be mapped to the same finite value lowering the overall size of the model. The reduced model size also has an influence on the latency making computations run faster overall.
